@@ -2,7 +2,7 @@ package com.example.application.views;
 
 import com.example.application.client.ProcessingConvert;
 import com.example.application.exceptions.ConverterException;
-import com.example.application.services.ServiceCurrenciesRepository;
+import com.example.application.services.CurrenciesService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.notification.Notification;
@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 @PageTitle("Convert currencies")
 @Route(value = "")
 public class MainView extends VerticalLayout {
-    public final ServiceCurrenciesRepository SERVICE_CURRENCIES_REPOSITORY = new ServiceCurrenciesRepository();
+    public final CurrenciesService SERVICE_CURRENCIES_REPOSITORY = new CurrenciesService();
     private final String ERROR_CONVERT_CURRENCY = "Error convert currency";
     private final String AMOUNT = "Amount";
     private final String START = "Start";

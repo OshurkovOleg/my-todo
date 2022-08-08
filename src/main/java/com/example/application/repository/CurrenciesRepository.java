@@ -16,8 +16,7 @@ public class CurrenciesRepository {
     private final static String INSERT_ONE_TYPE_CURRENCY_IN_TABLE = "insert into currency (name) values (?)";
     private final static String DELETE_ONE_TYPE_CURRENCY_FROM_TABLE = "delete from currency where name=(?)";
 
-    //TODO нужно ли скрывать реализацию
-    public static List<String> findCurrencies() {
+    public  List<String> findCurrencies() {
 
         try (Statement statement = ConnectionDB.getInstance().createStatement();
              ResultSet resultSet = statement.executeQuery(SELECT_ALL_CURRENCIES)) {
@@ -35,7 +34,7 @@ public class CurrenciesRepository {
         }
     }
 
-    public static void save(String currency) {
+    public void save(String currency) {
 
         if (currency != null) {
             try (PreparedStatement preparedStatement = ConnectionDB.getInstance().prepareStatement(INSERT_ONE_TYPE_CURRENCY_IN_TABLE)) {
@@ -48,7 +47,7 @@ public class CurrenciesRepository {
         }
     }
 
-    public static void delete(String currency) {
+    public void delete(String currency) {
 
         if (currency != null) {
             try (PreparedStatement preparedStatement = ConnectionDB.getInstance().prepareStatement(DELETE_ONE_TYPE_CURRENCY_FROM_TABLE)) {

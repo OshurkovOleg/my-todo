@@ -2,8 +2,7 @@ package com.example.application.views;
 
 import com.example.application.Settings;
 import com.example.application.model.Currency;
-import com.example.application.services.ServiceCurrenciesRepository;
-import com.example.application.services.ServiceCurrency;
+import com.example.application.services.CurrenciesService;
 import com.example.application.util.CurrenciesFromFile;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -19,8 +18,6 @@ import com.vaadin.flow.router.RouterLink;
 @PageTitle("Edit")
 @Route(value = "/edit")
 public class EditView extends VerticalLayout {
-    public final ServiceCurrenciesRepository SERVICE_CURRENCIES_REPOSITORY = new ServiceCurrenciesRepository();
-    public final ServiceCurrency SERVICE_CURRENCY = new ServiceCurrency();
     private final String LIST_OF_CURRENCIES = "List of currencies";
     private final String ADD = "Add";
     private final String DELETE = "Delete";
@@ -29,7 +26,8 @@ public class EditView extends VerticalLayout {
     private final ComboBox<String> comboBoxListAllCurrencies = new ComboBox<>(LIST_OF_CURRENCIES);
     private final Button buttonAddCurrency = new Button(ADD);
     private final Button buttonDeleteCurrency = new Button(DELETE);
-    private final Grid<Currency> GRID = new Grid<>(Currency.class, false);
+    public final CurrenciesService currenciesService = new CurrenciesService();
+    private final Grid<Currency> grid = new Grid<>(Currency.class, false);
     private String selectedCurrency;
 
 
@@ -54,20 +52,20 @@ public class EditView extends VerticalLayout {
 
     private void createGrid() {
         VerticalLayout gridCurrenciesVerticalLayout = new VerticalLayout();
-        GRID.removeAllColumns();
+        grid.removeAllColumns();
         configureGrid();
-        gridCurrenciesVerticalLayout.add(GRID);
+        gridCurrenciesVerticalLayout.add(grid);
         add(gridCurrenciesVerticalLayout);
 
     }
 
     private void configureGrid() {
-        GRID.addColumn(Currency::getName).setHeader("name").setTextAlign(ColumnTextAlign.CENTER).setWidth(Settings.COLUMN_WIDTH_GRID);
-        GRID.addThemeVariants(GridVariant.LUMO_COMPACT);
-        GRID.addThemeVariants(GridVariant.LUMO_COLUMN_BORDERS);
-        GRID.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
-        GRID.setWidth(Settings.WIDTH_GRID);
-        GRID.setItems(SERVICE_CURRENCY.getListObjCurrencies()); //TODO создаю объект и вызываю метод получения валюты
+        grid.addColumn(Currency::getName).setHeader("name").setTextAlign(ColumnTextAlign.CENTER).setWidth(Settings.COLUMN_WIDTH_GRID);
+        grid.addThemeVariants(GridVariant.LUMO_COMPACT);
+        grid.addThemeVariants(GridVariant.LUMO_COLUMN_BORDERS);
+        grid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
+        grid.setWidth(Settings.WIDTH_GRID);
+        grid.setItems(currenciesService.getListObjCurrencies());
     }
 
     private void listenDeleteButton() {
@@ -84,14 +82,14 @@ public class EditView extends VerticalLayout {
     }
 
     private void insertAndUpdateGrid() {
-        SERVICE_CURRENCIES_REPOSITORY.addCurrency(selectedCurrency); //TODO создаем сервис репозитория валюты и вызываем метод
-        GRID.removeAllColumns();
+        currenciesService.addCurrency(selectedCurrency);
+        grid.removeAllColumns();
         configureGrid();
     }
 
     private void deleteAndUpdateGrid() {
-        SERVICE_CURRENCIES_REPOSITORY.deleteCurrency(selectedCurrency); //TODO создаем сервис репозитория валюты и вызываем метод
-        GRID.removeAllColumns();
+        currenciesService.deleteCurrency(selectedCurrency);
+        grid.removeAllColumns();
         configureGrid();
     }
 
