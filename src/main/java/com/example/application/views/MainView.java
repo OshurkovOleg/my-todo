@@ -1,8 +1,8 @@
 package com.example.application.views;
 
+import com.example.application.client.ProcessingConvert;
 import com.example.application.exceptions.ConverterException;
-import com.example.application.repository.CurrenciesRepository;
-import com.example.application.working.ProcessingConvert;
+import com.example.application.services.ServiceCurrenciesRepository;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.notification.Notification;
@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 @PageTitle("Convert currencies")
 @Route(value = "")
 public class MainView extends VerticalLayout {
+    public final ServiceCurrenciesRepository SERVICE_CURRENCIES_REPOSITORY = new ServiceCurrenciesRepository();
     private final String ERROR_CONVERT_CURRENCY = "Error convert currency";
     private final String AMOUNT = "Amount";
     private final String START = "Start";
@@ -69,8 +70,8 @@ public class MainView extends VerticalLayout {
     }
 
     private void initComboBoxInAndFromCurrencies() {
-        COMBOBOX_FROM_CURRENCY.setItems(CurrenciesRepository.selectValueFromDataBaseList());
-        COMBOBOX_IN_CURRENCY.setItems(CurrenciesRepository.selectValueFromDataBaseList());
+        COMBOBOX_FROM_CURRENCY.setItems(SERVICE_CURRENCIES_REPOSITORY.getListCurrencies());
+        COMBOBOX_IN_CURRENCY.setItems(SERVICE_CURRENCIES_REPOSITORY.getListCurrencies());
     }
 
     private void listenComboBoxFromCurrency() {
@@ -89,11 +90,12 @@ public class MainView extends VerticalLayout {
     private void listenButtonStart() {
         BUTTON_START_CONVERTER.addClickListener(event -> {
             try {
-                conversionResult = ProcessingConvert.startConvert(startCurrency, resultCurrency, amountToConvert);
+                conversionResult = ProcessingConvert.startConvert(startCurrency, resultCurrency, amountToConvert); //TODO нужно ли создавать по аналогии с сервисным слоем
                 Notification.show(conversionResult);
             } catch (IOException e) {
                 throw new ConverterException(ERROR_CONVERT_CURRENCY + e);
             }
         });
     }
+
 }
