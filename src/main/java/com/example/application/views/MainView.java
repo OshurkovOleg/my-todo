@@ -90,7 +90,7 @@ public class MainView extends VerticalLayout {
     private void listenButtonStart() {
         BUTTON_START_CONVERTER.addClickListener(event -> {
             try {
-                conversionResult = ProcessingConvert.startConvert(startCurrency, resultCurrency, amountToConvert); //TODO нужно ли создавать по аналогии с сервисным слоем
+                conversionResult = ProcessingConvert.startConvert(startCurrency, resultCurrency, amountToConvert);
                 Notification.show(conversionResult);
             } catch (IOException e) {
                 throw new ConverterException(ERROR_CONVERT_CURRENCY + e);
